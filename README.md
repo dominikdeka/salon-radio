@@ -1,8 +1,10 @@
-**enable Network at Boot** 
+**enable Network at Boot**
+
 `sudo raspi-config`
 System Options->Network at Boot (enabled)
 
 **added to /boot/config.txt**
+
 ```
 #dtoverlay=vc4-fkms-v3d
 dtoverlay=vc4-kms-v3d,noaudio=on
@@ -11,10 +13,12 @@ dtoverlay=hifiberry-dacplus
 force_eeprom_read=0
 gpu_mem=128
 ```
+
 **print temperature alias**
+
 `alias temp='vcgencmd measure_temp'`
 
-***create desktop shortcut***
+**create desktop shortcut**
 
 `cat /home/pi/Desktop/my-chromium.desktop`
 
@@ -30,7 +34,8 @@ Icon=chromium-browser
 'stop asking':
 https://forums.raspberrypi.com/viewtopic.php?t=248380
 
-***enable hardware accelaration in chrome***
+**enable hardware accelaration in chrome**
+
 chrome://flags:
 Override software rendering list aka #ignore-gpu-blocklist;
 GPU rasterization aka #enable-gpu-rasterization;
@@ -40,12 +45,14 @@ Out-of-process 2D canvas rasterization. aka #canvas-oop-rasterization.
 then relaunched it using 
 `chromium-browser --enable-features=VaapiVideoDecoder` command.
 
-***install gpio listener***
+**install gpio listener**
+
 `sudo pip3 install websockets`
 add to /etc/rc.local
 `/home/pi/salon-radio/start.sh &> /tmp/rc.local.log`
 
 **install mopidy**
+
 https://docs.mopidy.com/en/latest/installation/debian/#install-from-apt-mopidy-com
 ```
 sudo adduser mopidy video
@@ -78,6 +85,7 @@ KERNEL=="sr0", SUBSYSTEM=="block", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0e8d", A
 Type=oneshot
 ExecStart=python3.9 /home/pi/salon-radio/addcdtracks.py
 ```
+
 **Kodi**
 
 https://htpc.xyz/2020/10/22/kodi-instalacja-inputstream-adaptive-i-rtmp-input/
@@ -116,6 +124,7 @@ to
 /home/pi/.kodi/userdata/addon_data/plugin.video.youtube
 
 **useful commands:**
+
 ```
 sudo mopidyctl config
 sudo systemctl start mopidy
@@ -132,6 +141,7 @@ sudo tail -f /home/pi/.kodi/temp/kodi.log
 ```
 
 **pir**
+
 ```sudo vi /boot/config.txt
 sudo reboot
 sudo vi /boot/config.txt
@@ -146,6 +156,7 @@ ir-keytable -t -s rc0
 ```
 
 **bluetooth**
+
 https://forums.raspberrypi.com/viewtopic.php?t=235519
 https://stackoverflow.com/questions/68728478/failed-to-set-power-on-org-bluez-error-blocked-problem
 
