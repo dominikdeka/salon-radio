@@ -6,8 +6,6 @@ import websockets
 import RPi.GPIO as GPIO
 import time
 import json
-import os
-import signal
 import subprocess
 import re
 from multiprocessing import Pool
@@ -127,9 +125,13 @@ async def jumpplaylists(uri, prefix):
         global currentPlaylist
         previousPlaylistUri = ''
 
-        await websocket.send(json.dumps({"jsonrpc": "2.0", "id": 1, "method": "core.playlists.as_list"}, indent='\t'))
-        message = await websocket.recv()
-        data = json.loads(message)
+        await websocket.send(json.dumps({"jsonrpc": "2.0", "id": 245, "method": "core.playlists.as_list"}, indent='\t'))
+
+        data = {} 
+        while 'id' not in data or data['id'] != 245:
+            message = await websocket.recv()
+            data = json.loads(message)
+
         result = [k for k in data['result'] if k['name'].startswith(prefix)]
         if currentPlaylist == {} or prefix not in currentPlaylist['name']:
             currentPlaylist = result[0]
@@ -144,9 +146,10 @@ async def jumpplaylists(uri, prefix):
             if currentPlaylist['uri'] == previousPlaylistUri:
                 currentPlaylist = result[0]
         print(currentPlaylist)
-        await websocket.send(json.dumps({"jsonrpc": "2.0", "id": 1, "method": "core.playlists.get_items", "params": {"uri": currentPlaylist['uri']}}, indent='\t'))
-        message = await websocket.recv()
-        data = json.loads(message)
+        await websocket.send(json.dumps({"jsonrpc": "2.0", "id": 246, "method": "core.playlists.get_items", "params": {"uri": currentPlaylist['uri']}}, indent='\t'))
+        while 'id' not in data or data['id'] != 246:
+            message = await websocket.recv()
+            data = json.loads(message)
         uris = []
         for v in data['result']:
             uris.append(v['uri'])
